@@ -1,0 +1,14 @@
+.splitCard {
+    display: flex;
+    justify-content: space-between;
+}
+
+.teamStatus {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.teamStatus > h3 {
+    margin: 0px 0px 0px 0px;
+}

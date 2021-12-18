@@ -1,0 +1,15 @@
+.footer {
+    position: fixed;
+    bottom: 0;
+    height: 30px;
+    font-size: small;
+}
+
+.footerPadding {
+    flex: 1
+}
+
+.contentBox {
+    max-width: 600px;
+    margin: auto;
+}

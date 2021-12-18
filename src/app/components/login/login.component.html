@@ -1,0 +1,22 @@
+<mat-card>
+    <mat-card-title>
+        Create New Session
+    </mat-card-title>
+    <mat-card-actions>
+        <button mat-raised-button (click)='create()' class='secondary' [disabled]='createIsDisabled'>Create</button>
+    </mat-card-actions>
+</mat-card>
+
+<mat-card>
+    <mat-card-title>
+        Join Session
+    </mat-card-title>
+    <mat-form-field appearance="fill">
+        <mat-label>Session Code</mat-label>
+        <input #sessionCode matInput required maxlength='4' autocomplete='off' [formControl]="codeForm">
+        <mat-error *ngIf="codeForm.invalid">{{getErrorMessage()}}</mat-error>
+    </mat-form-field>
+    <mat-card-actions>
+        <button mat-raised-button (click)='join(sessionCode.value)' class='secondary' [disabled]='joinIsDisabled'>Join</button>
+    </mat-card-actions>
+</mat-card>

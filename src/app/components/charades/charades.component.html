@@ -1,0 +1,27 @@
+<mat-card *ngIf='!presenting'>
+    <mat-card-title class='centered'>
+        <div class='centered' style='margin: 20px 0 20px 0; font-size: xxx-large;'>
+            {{username}}
+        </div>
+        From Team {{team}} Is Up
+    </mat-card-title>
+    <h3 class='centered'>
+        {{time}}
+    </h3>
+</mat-card>
+
+<mat-card *ngIf='presenting'>
+    <mat-card-title class='centered'>
+        Your Word Is
+        <div class='centered' style='margin: 20px 0 20px 0; font-size: xxx-large;'>
+            {{word}}
+        </div>
+    </mat-card-title>
+    <h3 class='centered'>
+        {{time}}
+    </h3>
+    <div class='splitCard'>
+        <button mat-raised-button (click)='timerButtonHit()' class='secondary' [disabled]='timerButtonIsDisabled'>{{timerButtonLabel}}</button>
+        <button mat-raised-button (click)='startNextRound()' class='secondary' [disabled]='startNextRoundButtonIsDisabled'>Start Next Round</button>
+    </div>
+</mat-card>

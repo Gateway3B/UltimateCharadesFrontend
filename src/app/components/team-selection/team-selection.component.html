@@ -1,0 +1,39 @@
+<mat-card matRipple (click)='joinTeam(1)'>
+    <mat-card-title>
+        Team One
+    </mat-card-title>
+    <mat-list>
+        <div *ngFor='let member of teamOne'>
+            <mat-divider></mat-divider>
+            <mat-list-item style='border-radius: 25px;' [ngStyle]="{'background-color': member.userId === userId ? '#0064006e' : ''}">
+                <span *ngIf='member.userId === ownerId'>
+                    <mat-icon>grade</mat-icon>
+                </span>
+                {{member.username}}
+            </mat-list-item>
+        </div>
+    </mat-list>
+</mat-card>
+
+<mat-card matRipple (click)='joinTeam(2)'>
+    <mat-card-title>
+        Team Two
+    </mat-card-title>
+    <mat-list>
+        <div *ngFor='let member of teamTwo'>
+            <mat-divider></mat-divider>
+            <mat-list-item style='border-radius: 25px;' [ngStyle]="{'background-color': member.userId === userId ? '#0064006e' : ''}">
+                <span *ngIf='member.userId === ownerId'>
+                    <mat-icon>grade</mat-icon>
+                </span>
+                {{member.username}}
+            </mat-list-item>
+        </div>
+    </mat-list>
+</mat-card>
+
+<div class='splitCard'>
+    <button mat-raised-button (click)='copyLink()' class='secondary' style='margin-left: 5%;'>Copy Link</button>
+    <button *ngIf='userId === ownerId' mat-raised-button (click)='startGame()' class='secondary'>Start Game</button>
+    <button mat-raised-button (click)='shareLink()' class='secondary' style='margin-right: 5%;'>Share Link</button>
+</div>

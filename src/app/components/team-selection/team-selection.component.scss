@@ -1,0 +1,9 @@
+.splitCard {
+    display: flex;
+    justify-content: space-between;
+}
+
+.splitCard > button {
+    max-width: 40%;
+}
+

@@ -1,0 +1,52 @@
+<mat-card class='splitCard'>
+    <div class='teamStatus'>
+        <h3>
+            Team One Ready
+        </h3>
+        <mat-icon>
+            {{teamOneStatus}}
+        </mat-icon>
+    </div>
+    <button mat-raised-button (click)='toggleReady()' class='secondary' style='float: right;' [disabled]='toggleReadyIsDisabled'>
+        {{readyText}}
+    </button>
+    <div class='teamStatus'>
+        <h3>
+            Team Two Ready
+        </h3>
+        <mat-icon>
+            {{teamTwoStatus}}
+        </mat-icon>
+    </div>
+</mat-card>
+
+<mat-card>
+    <mat-card-title>
+        Add Word
+    </mat-card-title>
+    <mat-form-field appearance='fill'>
+        <mat-label>Word</mat-label>
+        <input #word matInput required autocomplete='off' [formControl]="codeForm">
+        <mat-error *ngIf="codeForm.invalid">{{getErrorMessage()}}</mat-error>
+    </mat-form-field>
+    <mat-card-actions>
+        <button mat-raised-button (click)='addWord(word.value)' class='secondary' [disabled]='addWordIsDisabled'>Add</button>
+    </mat-card-actions>
+</mat-card>
+
+<mat-card>
+    <mat-card-title>
+        Words
+    </mat-card-title>
+    <mat-list>
+        <div *ngFor='let word of words' style='width: auto;'>
+            <mat-divider></mat-divider>
+            <mat-list-item style='position: relative;' (click)='deleteWord(word)' [disabled]='deleteWordIsDisabled'>
+                {{word}}
+                <mat-icon matRipple (click)='deleteWord(word)' style='position: absolute; right: 10px;'>
+                    cancel
+                </mat-icon>
+            </mat-list-item>
+        </div>
+    </mat-list>
+</mat-card>

@@ -1,0 +1,14 @@
+
+<mat-toolbar matRipple class='secondary'>
+  <div routerLink='/login' routerLinkActive='active'>{{title}}</div>
+</mat-toolbar>
+
+<div class='contentBox' [@routeAnimations]='prepareRoute(outlet)'>
+  <router-outlet #outlet='outlet'></router-outlet>
+</div>
+
+<mat-toolbar class='footer secondary'>
+  <span class='footerPadding'></span>
+  <div>G3 Industries</div>
+  <span class='footerPadding'></span>
+</mat-toolbar>
