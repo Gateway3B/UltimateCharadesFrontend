@@ -12,4 +12,12 @@
 .contentBox {
     max-width: 600px;
     margin: auto;
+    max-height: 90%;
+    overflow-y: auto;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }
+
+.contentBox::-webkit-scrollbar {
+    display: none;
+  }

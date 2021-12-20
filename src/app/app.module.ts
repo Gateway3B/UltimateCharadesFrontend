@@ -27,6 +27,7 @@ import { SocketService } from './services/socket/socket.service';
 import { TeamSelectionComponent } from './components/team-selection/team-selection.component';
 import { WordSelectionComponent } from './components/word-selection/word-selection.component';
 import { CharadesComponent } from './components/charades/charades.component';
+import { ResultsComponent } from './components/results/results.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { CharadesComponent } from './components/charades/charades.component';
     UsernameComponent,
     TeamSelectionComponent,
     WordSelectionComponent,
-    CharadesComponent
+    CharadesComponent,
+    ResultsComponent
   ],
   imports: [
     BrowserModule,

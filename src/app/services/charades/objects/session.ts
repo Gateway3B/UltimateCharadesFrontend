@@ -1,5 +1,6 @@
 import { state } from "./state";
 import { user } from "./user";
+import { word } from "./word";
 
 export class session {
     sessionId: string;
@@ -11,13 +12,15 @@ export class session {
     state: state;
     currentWord: string;
     currentPlayerId: string;
-    currentTime: number
+    currentTime: number;
+    teamOneWords: word[];
+    teamTwoWords: word[];
 
     static CreateEmpty(): session {
-        return new session('', '', '', new Map(), [], [false, false], state.teamSelection, '', '', 0);
+        return new session('', '', '', new Map(), [], [false, false], state.teamSelection, '', '', 0, [], []);
     };
 
-    constructor(sessionId: string, userId: string, ownerId: string, users: Map<string, user>, words: string[], ready: boolean[], state: state, currentPlayerId: string, currentWord: string, currentTime: number) {
+    constructor(sessionId: string, userId: string, ownerId: string, users: Map<string, user>, words: string[], ready: boolean[], state: state, currentPlayerId: string, currentWord: string, currentTime: number, teamOneWords: word[], teamTwoWords: word[]) {
         this.sessionId = sessionId;
         this.userId = userId;
         this.ownerId = ownerId;
@@ -28,6 +31,8 @@ export class session {
         this.currentPlayerId = currentPlayerId;
         this.currentWord = currentWord;
         this.currentTime = currentTime;
+        this.teamOneWords = teamOneWords;
+        this.teamTwoWords = teamTwoWords;
     }
 
     reAssign(session: session) {

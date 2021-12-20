@@ -53,4 +53,8 @@ export class emitEvents {
     stopTimer() {
         this.socketService.emitToServer('stopTimer', null);
     }
+
+    nextRound() {
+        this.socketService.emitToServer('nextRound', null);
+    }
 }

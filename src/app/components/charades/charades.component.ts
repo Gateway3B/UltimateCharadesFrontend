@@ -31,22 +31,28 @@ export class CharadesComponent implements OnInit {
   constructor(private router: Router, private charadesService: CharadesService, public snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
-    this.timerButtonLabel = 'Start Timer';
     this.timerButtonIsDisabled = false;
     this.startNextRoundButtonIsDisabled = true;
-    this.update();
+    this.updateRound();
 
     this.setTime();
     this.timerButtonLabel = timer.startTimer;
 
-    this.charadesService.sessionSubject.subscribe(sessionEvent => {
+    const subscription = this.charadesService.sessionSubject.subscribe(sessionEvent => {
       switch(sessionEvent) {
         case(sessionEvents.continue):
-          this.update();
+          this.updateRound();
+          this.timerButtonLabel = timer.startTimer;
           break;
 
         case(sessionEvents.update):
+          this.timerButtonLabel = timer.stopTimer;
           this.setTime();
+          break;
+
+        case(sessionEvents.results):
+          subscription.unsubscribe();
+          this.router.navigate(['/', `${this.charadesService.session.sessionId}`, `${this.charadesService.session.user.username}`, 'results'], { skipLocationChange: true});
           break;
       }
     })
@@ -58,10 +64,11 @@ export class CharadesComponent implements OnInit {
     this.time = `${minutes.length >= 2 ? minutes : `0${minutes}`}m ${seconds.length >= 2 ? seconds : `0${seconds}`}s`;
   }
 
-  update() {
+  updateRound() {
     const player = this.charadesService.session.users.get(this.charadesService.session.currentPlayerId);
     this.team = player.team === team.one ? 'One' : 'Two';
     this.username = player.username;
+    this.time = '00m 00s';
 
     this.presenting = this.charadesService.session.currentPlayerId === this.charadesService.session.userId;
 
@@ -94,6 +101,7 @@ export class CharadesComponent implements OnInit {
           break;
           
         case sessionEvents.timerStop:
+          this.startNextRoundButtonIsDisabled = false;
           this.timerButtonLabel = timer.startTimer;
           break;
       }
@@ -104,7 +112,7 @@ export class CharadesComponent implements OnInit {
   }
 
   startNextRound() {
-
+    this.charadesService.emitEvents.nextRound();
   }
 
   failure(message: string) {

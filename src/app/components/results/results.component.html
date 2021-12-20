@@ -1,0 +1,39 @@
+<mat-card>
+    <mat-card-title>
+        {{winner}}
+    </mat-card-title>
+</mat-card>
+
+<mat-card>
+    <mat-card-title>
+        Team One Words
+    </mat-card-title>
+    <mat-list>
+        <div *ngFor='let word of teamOneWords'>
+            <mat-divider></mat-divider>
+            <mat-list-item style='position: relative;'>
+                {{word.word}}
+                <div style='position: absolute; right: 10px;'>
+                    {{getTimeString(word.time)}}
+                </div>
+            </mat-list-item>
+        </div>
+    </mat-list>
+</mat-card>
+
+<mat-card>
+    <mat-card-title>
+        Team Two Words
+    </mat-card-title>
+    <mat-list>
+        <div *ngFor='let word of teamTwoWords'>
+            <mat-divider></mat-divider>
+            <mat-list-item style='position: relative;'>
+                {{word.word}}
+                <div style='position: absolute; right: 10px;'>
+                    {{getTimeString(word.time)}}
+                </div>
+            </mat-list-item>
+        </div>
+    </mat-list>
+</mat-card>

@@ -6,5 +6,6 @@ export enum sessionEvents {
     themToggle,
     userClaimed,
     timerStop,
-    timerStart
+    timerStart,
+    results
 }

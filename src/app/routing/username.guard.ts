@@ -18,9 +18,6 @@ export class UsernameGuard implements CanActivate {
     const sessionId: string = stateRouter.root.children[0].params.sessionId;
     const username: string = stateRouter.root.children[0].params.username;
 
-    console.log(stateRouter);
-
-
     if(stateRouter.url === `/${sessionId}` || this.charadesService.session.users.size > 0) {
       return true;
     }

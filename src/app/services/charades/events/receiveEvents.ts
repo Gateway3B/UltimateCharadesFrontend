@@ -31,7 +31,8 @@ export class receiveEvents {
         charadesWord: receiveEvents.charadesWord,
         timerUpdate: receiveEvents.timerUpdate,
         timerStart: receiveEvents.timerStart,
-        timerStop: receiveEvents.timerStop
+        timerStop: receiveEvents.timerStop,
+        results: receiveEvents.results
     }
 
     static onSessionJoined(sessionId: string) {
@@ -127,6 +128,13 @@ export class receiveEvents {
 
     static timerStop(message: string) {
         receiveEvents.sessionSubject.next(sessionEvents.timerStop);
+    }
+
+    static results(words: string) {
+        const { teamOneWords, teamTwoWords } = JSON.parse(words);
+        receiveEvents.session.teamOneWords = teamOneWords;
+        receiveEvents.session.teamTwoWords = teamTwoWords;
+        receiveEvents.sessionSubject.next(sessionEvents.results);
     }
 
     static userClaimed(sessionString: string) {
