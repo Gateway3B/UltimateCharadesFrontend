@@ -1,5 +1,6 @@
 import { Subject } from "rxjs";
 import { session } from "../objects/session";
+import { state } from "../objects/state";
 import { user } from "../objects/user";
 import { sessionEvents } from "./sessionEvents";
 
@@ -132,6 +133,7 @@ export class receiveEvents {
 
     static results(words: string) {
         const { teamOneWords, teamTwoWords } = JSON.parse(words);
+        receiveEvents.session.state = state.results;
         receiveEvents.session.teamOneWords = teamOneWords;
         receiveEvents.session.teamTwoWords = teamTwoWords;
         receiveEvents.sessionSubject.next(sessionEvents.results);

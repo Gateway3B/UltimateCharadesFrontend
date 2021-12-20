@@ -125,6 +125,8 @@ export class WordSelectionComponent implements OnInit {
           this.addWordIsDisabled = false;
           break;
       }
+
+      this.codeForm.reset();
     });
 
     this.charadesService.emitEvents.addWord(word);

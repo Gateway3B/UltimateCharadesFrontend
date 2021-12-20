@@ -12,7 +12,7 @@ export class SocketService {
   public socketId: string;
 
   constructor() {
-    this.clientSocket = connect(environment.TEST_URL);    
+    this.clientSocket = connect(environment.BACKEND_URL);    
     this.clientSocket.on('connect', () => {
       this.socketId = this.clientSocket.id;
     });

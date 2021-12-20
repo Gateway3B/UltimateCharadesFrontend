@@ -56,6 +56,12 @@ export class UsernameGuard implements CanActivate {
               this.router.navigateByUrl(this.router.parseUrl(baseRoute + '/charades'), {skipLocationChange: true});
               break;
 
+            case(state.results):
+              subscribe.next(false);
+              this.location.replaceState(baseRoute);
+              this.router.navigateByUrl(this.router.parseUrl(baseRoute + '/results'), {skipLocationChange: true});
+              break;
+
           }
           subscribe.complete();
         }
