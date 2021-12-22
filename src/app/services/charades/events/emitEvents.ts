@@ -57,4 +57,8 @@ export class emitEvents {
     nextRound() {
         this.socketService.emitToServer('nextRound', null);
     }
+
+    results() {
+        this.socketService.emitToServer('results', null);
+    }
 }

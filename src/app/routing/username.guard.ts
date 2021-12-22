@@ -50,7 +50,8 @@ export class UsernameGuard implements CanActivate {
               this.router.navigateByUrl(this.router.parseUrl(baseRoute + '/wordSelection'), {skipLocationChange: true});
               break;
 
-            case(state.teamOnePlay || state.teamTwoPlay):
+            case(state.teamOnePlay):
+            case(state.teamTwoPlay):
               subscribe.next(false);
               this.location.replaceState(baseRoute);
               this.router.navigateByUrl(this.router.parseUrl(baseRoute + '/charades'), {skipLocationChange: true});

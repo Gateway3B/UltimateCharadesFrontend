@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { CharadesService } from 'src/app/services/charades/charades.service';
+import { sessionEvents } from 'src/app/services/charades/events/sessionEvents';
 import { word } from 'src/app/services/charades/objects/word';
 
 @Component({
@@ -14,9 +16,34 @@ export class ResultsComponent implements OnInit {
 
   winner: string;
 
-  constructor(private charadesService: CharadesService) { }
+  constructor(private charadesService: CharadesService, private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
+    if(this.charadesService.session.teamOneWords.length === 0) {
+      this.charadesService.emitEvents.results();
+
+      let timeout = setTimeout(() => {
+        this.failure('Error Retrieving Results');
+      }, 2000);
+
+      const subscription = this.charadesService.sessionSubject.subscribe(sessionEvent => {
+        subscription.unsubscribe();
+  
+        switch(sessionEvent) {
+          case sessionEvents.results:
+            clearTimeout(timeout);
+            this.setup();
+            break;
+        }
+      })
+    } else {
+      this.setup();
+    }
+    
+
+  }
+
+  setup() {
     this.teamOneWords = this.charadesService.session.teamOneWords;
     this.teamTwoWords = this.charadesService.session.teamTwoWords;
 
@@ -40,7 +67,11 @@ export class ResultsComponent implements OnInit {
       
     if(diff === 0)
       this.winner = 'It Is A Tie!';
+  }
 
+  
+  failure(message: string) {
+    this.snackBar.open(message, 'Dismiss', { duration: 2000 });
   }
 
   getTimeString(time: number) {
