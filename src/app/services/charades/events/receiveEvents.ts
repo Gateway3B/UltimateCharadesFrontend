@@ -56,6 +56,10 @@ export class receiveEvents {
 
     static userAdded(userString: string) {
         const user: user = JSON.parse(userString);
+        receiveEvents.session.users.forEach(iUser => {
+            if(iUser.username === user.username)
+                receiveEvents.session.users.delete(iUser.userId);
+        })
         receiveEvents.session.users.set(user.userId, user);
         receiveEvents.sessionSubject.next(sessionEvents.update);
     }

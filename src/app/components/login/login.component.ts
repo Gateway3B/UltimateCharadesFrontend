@@ -25,6 +25,12 @@ export class LoginComponent implements OnInit {
 
     this.createIsDisabled = false;
     this.joinIsDisabled = false;
+
+    this.codeForm.valueChanges.subscribe(observable => {
+      const upperCase: string = (<string>this.codeForm.value).toUpperCase()
+      if(upperCase !== <string>this.codeForm.value)
+        this.codeForm.setValue(upperCase);
+    })
   }
 
   getErrorMessage() {

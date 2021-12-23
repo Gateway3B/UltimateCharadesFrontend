@@ -7,9 +7,11 @@
             {{teamOneStatus}}
         </mat-icon>
     </div>
-    <button mat-raised-button (click)='toggleReady()' class='secondary' style='float: right;' [disabled]='toggleReadyIsDisabled'>
-        {{readyText}}
-    </button>
+    <div>
+        <button mat-raised-button (click)='toggleReady()' class='secondary' style='float: right;' [disabled]='toggleReadyIsDisabled'>
+            {{readyText}}
+        </button>
+    </div>
     <div class='teamStatus'>
         <h3>
             Team Two Ready
