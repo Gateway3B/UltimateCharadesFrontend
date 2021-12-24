@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, Observer } from 'rxjs';
 import { SocketIOClient, connect, Connection } from 'socket.io-client';
 import { environment } from '../../../environments/environment';
 
@@ -9,12 +9,17 @@ import { environment } from '../../../environments/environment';
 export class SocketService {
 
   private clientSocket: SocketIOClient.Socket;
-  public socketId: string;
 
   constructor() {
-    this.clientSocket = connect(environment.BACKEND_URL);    
-    this.clientSocket.on('connect', () => {
-      this.socketId = this.clientSocket.id;
+    this.clientSocket = connect(environment.BACKEND_URL);
+  }
+
+  get socketId(): Observable<string> {
+    return new Observable(subscribe => {
+      this.clientSocket.on('connect', () => {
+        subscribe.next(this.clientSocket.id);
+        subscribe.complete();
+      });
     });
   }
 

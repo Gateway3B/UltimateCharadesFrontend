@@ -5,149 +5,121 @@ import { user } from "../objects/user";
 import { sessionEvents } from "./sessionEvents";
 
 export class receiveEvents {
-    static session: session;
-    static sessionSubject: Subject<sessionEvents>
 
-    constructor(session: session, sessionSubject: Subject<sessionEvents>) {
-        receiveEvents.session = session;
-        receiveEvents.sessionSubject = sessionSubject;
+    constructor(private session: session, private sessionSubject: Subject<sessionEvents>) {}
+
+    sessionJoined(sessionId: string) {
+        this.session.reAssign(session.CreateEmpty());
+        this.session.sessionId = sessionId;
+        this.sessionSubject.next(sessionEvents.continue);
     }
 
-    events = {
-        sessionJoined: receiveEvents.onSessionJoined,
-        sessionDoesNotExist: receiveEvents.sessionDoesNotExist,
-        usernameAccepted: receiveEvents.usernameAccepted,
-        usernameTaken: receiveEvents.usernameTaken,
-        userAdded: receiveEvents.userAdded,
-        existingUsers: receiveEvents.existingUsers,
-        setOwner: receiveEvents.setOwner,
-        userClaimed: receiveEvents.userClaimed,
-        cantBegin: receiveEvents.cantBegin,
-        teamsSet: receiveEvents.teamsSet,
-        wordAdded: receiveEvents.wordAdded,
-        wordDeleted: receiveEvents.wordDeleted,
-        usToggle: receiveEvents.usToggle,
-        themToggle: receiveEvents.themToggle,
-        nextRound: receiveEvents.nextRound,
-        charadesWord: receiveEvents.charadesWord,
-        timerUpdate: receiveEvents.timerUpdate,
-        timerStart: receiveEvents.timerStart,
-        timerStop: receiveEvents.timerStop,
-        results: receiveEvents.results
+    sessionDoesNotExist(message: string) {
+        this.sessionSubject.next(sessionEvents.error);
     }
 
-    static onSessionJoined(sessionId: string) {
-        receiveEvents.session.reAssign(session.CreateEmpty());
-        receiveEvents.session.sessionId = sessionId;
-        receiveEvents.sessionSubject.next(sessionEvents.continue);
+    usernameAccepted(username: string) {
+        this.sessionSubject.next(sessionEvents.continue);
     }
 
-    static sessionDoesNotExist(message: string) {
-        receiveEvents.sessionSubject.next(sessionEvents.error);
+    usernameTaken(message: any) {
+        this.sessionSubject.next(sessionEvents.error);
     }
 
-    static usernameAccepted(username: string) {
-        receiveEvents.sessionSubject.next(sessionEvents.continue);
-    }
-
-    static usernameTaken(message: any) {
-        receiveEvents.sessionSubject.next(sessionEvents.error);
-    }
-
-    static userAdded(userString: string) {
+    userAdded(userString: string) {
         const user: user = JSON.parse(userString);
-        receiveEvents.session.users.forEach(iUser => {
+        this.session.users.forEach(iUser => {
             if(iUser.username === user.username)
-                receiveEvents.session.users.delete(iUser.userId);
+                this.session.users.delete(iUser.userId);
         })
-        receiveEvents.session.users.set(user.userId, user);
-        receiveEvents.sessionSubject.next(sessionEvents.update);
+        this.session.users.set(user.userId, user);
+        this.sessionSubject.next(sessionEvents.update);
     }
 
-    static existingUsers(existingUsersString: string) {
+    existingUsers(existingUsersString: string) {
         const existingUsers: user[] = JSON.parse(existingUsersString);
         const usersMap: Map<string, user> = new Map(existingUsers.map(user => [user.userId, user]));
 
-        receiveEvents.session.users = usersMap;
+        this.session.users = usersMap;
     }
 
-    static setOwner(ownerId: string) {
-        receiveEvents.session.ownerId = ownerId;
+    setOwner(ownerId: string) {
+        this.session.ownerId = ownerId;
     }
 
-    static cantBegin(message: string) {
-        receiveEvents.sessionSubject.next(sessionEvents.error);
+    cantBegin(message: string) {
+        this.sessionSubject.next(sessionEvents.error);
     }
 
-    static teamsSet(message: string) {
-        receiveEvents.sessionSubject.next(sessionEvents.continue);
+    teamsSet(message: string) {
+        this.sessionSubject.next(sessionEvents.continue);
     }
 
-    static wordAdded(word: string) {
-        receiveEvents.session.words.push(word);
-        receiveEvents.sessionSubject.next(sessionEvents.update);
+    wordAdded(word: string) {
+        this.session.words.push(word);
+        this.sessionSubject.next(sessionEvents.update);
     }
 
-    static wordDeleted(word: string) {
-        const index: number = receiveEvents.session.words.indexOf(word);
-        receiveEvents.session.words = receiveEvents.session.words.filter(value => {
+    wordDeleted(word: string) {
+        const index: number = this.session.words.indexOf(word);
+        this.session.words = this.session.words.filter(value => {
             return value !== word;
         });
-        receiveEvents.sessionSubject.next(sessionEvents.update);
+        this.sessionSubject.next(sessionEvents.update);
     }
 
-    static usToggle(message: string) {
-        const index: number = receiveEvents.session.user.team - 1;
-        receiveEvents.session.ready[index] = !receiveEvents.session.ready[index];
-        receiveEvents.sessionSubject.next(sessionEvents.usToggle);
+    usToggle(message: string) {
+        const index: number = this.session.user.team - 1;
+        this.session.ready[index] = !this.session.ready[index];
+        this.sessionSubject.next(sessionEvents.usToggle);
 
     }
 
-    static themToggle(message: string) {
-        const index: number = receiveEvents.session.user.team === 1?1:0;
-        receiveEvents.session.ready[index] = !receiveEvents.session.ready[index];
-        receiveEvents.sessionSubject.next(sessionEvents.themToggle);
+    themToggle(message: string) {
+        const index: number = this.session.user.team === 1?1:0;
+        this.session.ready[index] = !this.session.ready[index];
+        this.sessionSubject.next(sessionEvents.themToggle);
     }
 
-    static nextRound(nextRoundString: string) {
+    nextRound(nextRoundString: string) {
         const { currentPlayerId, currentState } = JSON.parse(nextRoundString);
 
-        receiveEvents.session.currentPlayerId = currentPlayerId;
-        receiveEvents.session.state = currentState;
+        this.session.currentPlayerId = currentPlayerId;
+        this.session.state = currentState;
 
-        receiveEvents.sessionSubject.next(sessionEvents.continue);
+        this.sessionSubject.next(sessionEvents.continue);
     }
 
-    static charadesWord(charadesWord: string) {
-        receiveEvents.session.currentWord = charadesWord;
+    charadesWord(charadesWord: string) {
+        this.session.currentWord = charadesWord;
     }
 
-    static timerUpdate(time: number) {
-        receiveEvents.session.currentTime = time;
-        receiveEvents.sessionSubject.next(sessionEvents.update);
+    timerUpdate(time: number) {
+        this.session.currentTime = time;
+        this.sessionSubject.next(sessionEvents.update);
     }
 
-    static timerStart(message: string) {
-        receiveEvents.sessionSubject.next(sessionEvents.timerStart);
+    timerStart(message: string) {
+        this.sessionSubject.next(sessionEvents.timerStart);
     }
 
-    static timerStop(message: string) {
-        receiveEvents.sessionSubject.next(sessionEvents.timerStop);
+    timerStop(message: string) {
+        this.sessionSubject.next(sessionEvents.timerStop);
     }
 
-    static results(words: string) {
+    results(words: string) {
         const { teamOneWords, teamTwoWords } = JSON.parse(words);
-        receiveEvents.session.state = state.results;
-        receiveEvents.session.teamOneWords = teamOneWords;
-        receiveEvents.session.teamTwoWords = teamTwoWords;
-        receiveEvents.sessionSubject.next(sessionEvents.results);
+        this.session.state = state.results;
+        this.session.teamOneWords = teamOneWords;
+        this.session.teamTwoWords = teamTwoWords;
+        this.sessionSubject.next(sessionEvents.results);
     }
 
-    static userClaimed(sessionString: string) {
+    userClaimed(sessionString: string) {
         const sessionPrototype = JSON.parse(sessionString);
         sessionPrototype.users = new Map(sessionPrototype.users.map(user => [user.userId, user]));
-        receiveEvents.session.reAssign(sessionPrototype);
-        receiveEvents.sessionSubject.next(sessionEvents.userClaimed);
+        this.session.reAssign(sessionPrototype);
+        this.sessionSubject.next(sessionEvents.userClaimed);
     }
 
 }

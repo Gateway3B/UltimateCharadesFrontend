@@ -11,23 +11,26 @@ import { sessionEvents } from './events/sessionEvents';
 })
 export class CharadesService {
 
-  public sessionSubject: Subject<sessionEvents>;
-  public emitEvents: emitEvents;
-  
+  sessionSubject: Subject<sessionEvents>;
+  emitEvents: emitEvents;
   session: session;
-  receiveEvents: receiveEvents;
+  
+  private receiveEvents: receiveEvents;
 
   constructor(private socketService: SocketService) {
     this.session = session.CreateEmpty();
     this.sessionSubject = new Subject();
 
     this.receiveEvents = new receiveEvents(this.session, this.sessionSubject);
-    this.emitEvents = new emitEvents(this.session, socketService);
+    this.emitEvents = new emitEvents(this.session, this.socketService);
 
-    Object.keys(this.receiveEvents.events).forEach(key => {
-      this.socketService.listenToServer(key).subscribe(data => {
-        this.session.userId = this.socketService.socketId; // TODO: This is wastefull and needs to be moved into an observable.
-        this.receiveEvents.events[key](data);
+    this.socketService.socketId.subscribe(socketId => {
+      this.session.userId = socketId;
+    });
+
+    Object.getOwnPropertyNames(receiveEvents.prototype).filter(method => method !== 'constructor').forEach(event => {
+      this.socketService.listenToServer(event).subscribe(data => {
+        this.receiveEvents[event](data);
       });
     });
   }

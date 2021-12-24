@@ -2,13 +2,8 @@ import { SocketService } from "../../socket/socket.service";
 import { session } from "../objects/session";
 
 export class emitEvents {
-    session: session;
-    socketService: SocketService
 
-    constructor(session: session, socketService: SocketService) {
-        this.session = session;
-        this.socketService = socketService;
-    }
+    constructor(private session: session, private socketService: SocketService) {}
 
     createSession() {
         this.socketService.emitToServer('createSession', null);
