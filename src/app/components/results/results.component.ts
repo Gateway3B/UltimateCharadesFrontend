@@ -60,10 +60,10 @@ export class ResultsComponent implements OnInit {
     const diff = teamOneTime - teamTwoTime;
 
     if(diff > 0)
-      this.winner = 'Team Two Wins!';
+      this.winner = 'Team One Wins!';
       
     if(diff < 0)
-      this.winner = 'Team One Wins!';
+      this.winner = 'Team Two Wins!';
       
     if(diff === 0)
       this.winner = 'It Is A Tie!';
