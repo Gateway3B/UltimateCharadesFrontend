@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  BACKEND_URL: 'https://ultimatecharadesbackend.herokuapp.com/'
+  BACKEND_URL: 'https://ultimatecharadesbackend.g3tech.net/'
 };

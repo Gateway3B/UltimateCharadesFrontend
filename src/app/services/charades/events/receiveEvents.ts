@@ -18,7 +18,8 @@ export class receiveEvents {
         this.sessionSubject.next(sessionEvents.error);
     }
 
-    usernameAccepted(username: string) {
+    usernameAccepted(userId: string) {
+        this.session.userId = userId;
         this.sessionSubject.next(sessionEvents.continue);
     }
 
