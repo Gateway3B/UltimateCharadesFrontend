@@ -9,8 +9,8 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "heroku-postbuild": "ng build --prod",
-    "build:docker": "docker build -t ultimatecharadesfrontend ."
+    "docker:build": "docker build -t hl-docker-registry.g3tech.net/ultimate-charades-frontend:latest .",
+    "docker:push": "docker push hl-docker-registry.g3tech.net/ultimate-charades-frontend:latest"
   },
   "private": true,
   "dependencies": {
