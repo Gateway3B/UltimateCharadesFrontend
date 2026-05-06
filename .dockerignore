@@ -1,2 +1,12 @@
 .env
 .tar
+node_modules
+.git
+.gitignore
+.vscode
+.idea
+*.md
+*.log
+dist
+coverage
+e2e
