@@ -1,4 +1,5 @@
 .env
+.env.*
 .tar
 node_modules
 .git
